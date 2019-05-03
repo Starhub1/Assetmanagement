@@ -18,7 +18,7 @@ app.use(expressLayouts);
 
 //connect to db
 
-mongoose.connect(process.env.DB_URI);
+mongoose.connect("mongodb+srv://test:test@cluster0-bm3xl.mongodb.net/test?retryWrites=true");
 
 //set the routes
 app.use(require('./app/route'))
