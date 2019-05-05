@@ -1,4 +1,20 @@
+<% if (success.length > 0) { %>
+    <div class="alert alert-success"><%= success %></div>
+<% } %>
+
 <div class="jumbotron text-center">
-    <h1><%= event.name %></h1>
-    <p><%= event.description %></p>
+    <h1><%= asset.name %></h1>
+    <p><%= asset.description %></p>
+</div>
+<div>
+    <p><%= asset.IMEI %></p>
+    <p><%= asset.color %></p>
+    <p><%= asset.Model %></p>
+    <p><%= asset.OS %></p>
+    <p><%= asset.RAM %></p>
+    <p><%= asset.Storage %></p>
+    <p><%= asset.accessories %></p>
+    <p><%= asset.owner %></>p
+    <p><%= asset.email %></p>
+    <p><%= asset.assignedDate %></p>
 </div>

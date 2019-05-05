@@ -1,16 +1,26 @@
 
 const express = require('express');
 const router = express.Router();
-const eventsController = require('./controllers/events.controller');
+const AssetsController = require('./controllers/assets.controller');
 
 
-router.get('/', eventsController.showEvents);
+router.get('/', AssetsController.showAssets);
 
-router.get('/seed',eventsController.seedEvents);
+router.get('/seed',AssetsController.seedAssets);
 
-router.post('/create',eventsController.showCreate);
+router.get('/create',AssetsController.showCreate);
 
-router.get('/:slug', eventsController.showSingle);
+router.post('/create',AssetsController.processCreate);
+
+router.get('/:IMEI/edit',AssetsController.showEdit);
+
+router.post('/:IMEI',AssetsController.processEdit);
+
+router.get('/:IMEI', AssetsController.showSingle);
+
+router.get('/:IMEI/delete',AssetsController.deleteAsset);
+
+router.post('/:IMEI/assign',AssetsController.assignNewOwner)
 
 
 

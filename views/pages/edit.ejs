@@ -1,5 +1,5 @@
 <div class="jumbotron text-center">
-    <h1>Create an Asset</h1>
+    <h1>Editing <%= asset.name %></h1>
 </div>
 
 <div class="row">
@@ -13,55 +13,54 @@
             </div>
         <% } %>
         
-        <form action="/create" method="POST">
+        <form action="/<%= asset.IMEI %>" method="POST">
 
             <div class="form-group">
                 <label>Name</label>
-                <input type="text" name="name" class="form-control" required>
+                <input type="text" name="name" class="form-control" value="<%= asset.name %>">
             </div>
-
             <div class="form-group">
                 <label>IMEI</label>
-                <input type="number" name="IMEI" class="form-control" required>
+                <input type="number" name="IMEI" class="form-control" required value="<%= asset.IMEI %>">
             </div>
 
             <div class="form-group">
                 <label>Color</label>
-                <input type="text" name="color" class="form-control">
+                <input type="text" name="color" class="form-control" value="<%= asset.color %>">
             </div>
 
             <div class="form-group">
                 <label>Model</label>
-                <input type="text" name="Model" class="form-control">
+                <input type="text" name="Model" class="form-control" value="<%= asset.Model %>">
             </div>
 
             <div class="form-group">
                 <label>OS</label>
-                <input type="text" name="OS" class="form-control">
+                <input type="text" name="OS" class="form-control" value="<%= asset.OS %>">
             </div>
 
             <div class="form-group">
                 <label>RAM</label>
-                <input type="text" name="RAM" class="form-control">
+                <input type="text" name="RAM" class="form-control" value="<%= asset.RAM %>">
             </div>
 
             <div class="form-group">
                 <label>Storage</label>
-                <input type="text" name="Storage" class="form-control">
+                <input type="text" name="Storage" class="form-control" value="<%= asset.Storage %>">
             </div>
 
             <div class="form-group">
                 <label>Accessories</label>
-                <input type="text" name="accesories" class="form-control">
+                <input type="text" name="accesories" class="form-control" value="<%= asset.accesories %>">
             </div>
 
             <div class="form-group">
                 <label>Description</label>
-                <textarea name="description" rows="5" class="form-control"></textarea>
+                <textarea name="description" rows="5" class="form-control"><%= asset.description %></textarea>
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-success btn-lg">Create</button>
+                <button type="submit" class="btn btn-success btn-lg">Update</button>
             </div>
 
         </form>
