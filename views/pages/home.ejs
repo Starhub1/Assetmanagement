@@ -32,6 +32,8 @@
                 <!-- Trigger the modal -->
                 <a href="#myModal" class="btn btn-sm btn-primary" data-toggle="modal"
                     data-asset-name="<%= asset.IMEI %>">Assign</a>
+                <a href="#myModal" class="btn btn-sm btn-primary" data-toggle="modal"
+                    data-asset-name="<%= asset.IMEI %>/history">History</a>
             </td>
         </tr>
         <% } %>
@@ -48,22 +50,23 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <div class="alert alert-success" id="alert-Message"></div>
             </div>
             <form action="" method="POST" id="assignNewOwner">
                 <div class="modal-body mx-3">
                     <div class="md-form mb-5">
                         <label data-error="wrong" data-success="right" for="defaultForm-email">Name</label>
-                        <input type="text" id="defaultForm-email" class="form-control validate" required />
+                        <input type="text" name="owner" id="defaultForm-owner" class="form-control validate" required />
                     </div>
                     <div class="md-form mb-5">
                         <label data-error="wrong" data-success="right" for="defaultForm-email">Email</label>
-                        <input type="text" id="defaultForm-email" class="form-control validate" required />
+                        <input type="text" name="email" id="defaultForm-email" class="form-control validate" required />
                     </div>
 
                     <div class="md-form mb-4">
-                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Message</label>
-                        <textarea rows="5" type="password" id="defaultForm-pass" class="form-control validate"
-                            value=""></textarea>
+                        <label data-error="wrong" data-success="right" for="defaultForm-message">Message</label>
+                        <textarea rows="5" type="password" name="message" id="defaultForm-message"
+                            class="form-control validate" value=""></textarea>
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
@@ -76,25 +79,27 @@
 <script>
     $('#myModal').on('show.bs.modal', function (e) {
         var assetName = $(e.relatedTarget).data('asset-name');
-        $(e.currentTarget).find('#modelTitle').text(assetName + " new owner");
+        $(e.currentTarget).find('#modelTitle').text(assetName);
         $(e.currentTarget).find('#assignNewOwner').attr("action", "/" + assetName);
     });
 
-    $('#assignNewOwner').submit(function () {
+    $('#assignNewOwner').submit(function (event) {
         // Stop form from submitting normally
-        //asset.p.prassetDefault();
+        event.preventDefault();
         // Get some values from elements on the page:
         var $form = $(this),
-            name = $form.find("#defaultForm-email").val(),
-            description = $form.find("#defaultForm-pass").val()
+            owner = $form.find("#defaultForm-owner").val(),
+            email = $form.find("#defaultForm-email").val()
+        message = $form.find("#defaultForm-message").val()
         url = $form.attr("action");
 
-        $('#myModal').modal('toggle');
+        //$('#myModal').modal('hide');
         $.post(url, {
-            name: name,
-            description: description
+            owner: owner,
+            email: email,
+            message: message
         }, function (data, status) {
-            //alert("Data: " + data + "\nStatus: " + status);
+
             if (data.redirect) {
                 // data.redirect contains the string URL to redirect to
                 window.location.href = data.redirect;
@@ -104,9 +109,10 @@
             }
         });
 
+        $('#alert-Message').text('Successfully Added the owner');
         setTimeout(function () {
             location.reload();
-        }, 0);
+        }, 500);
         // this.submit();
     });
 </script>

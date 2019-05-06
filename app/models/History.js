@@ -2,19 +2,15 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // create a schema
-const assetSchema = new Schema({
-  name: String,
+const historySchema = new Schema({
+  assetName: String,
   IMEI:String,
-  description: String,
-  color:String,
-  Model:String,
-  OS:String,
-  RAM:String,
-  Storage:String,
-  accesories:String,
-  owner:String,
-  email:String,
-  assignedDate:String
+  historyArr:[{
+      owner:String,
+      email:String,
+      fromDate:String,
+      toDate:String
+  }]
 });
 
 // middleware -----
@@ -25,10 +21,10 @@ const assetSchema = new Schema({
 // });
 
 // create the model
-const assetModel = mongoose.model("Asset", assetSchema);
+const historyModel = mongoose.model("History", historySchema);
 
 // export the model
-module.exports = assetModel;
+module.exports = historyModel;
 
 // function to slugify a name
 // function slugify(text) {

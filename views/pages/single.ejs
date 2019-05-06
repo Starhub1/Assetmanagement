@@ -1,5 +1,5 @@
 <% if (success.length > 0) { %>
-    <div class="alert alert-success"><%= success %></div>
+<div class="alert alert-success"><%= success %></div>
 <% } %>
 
 <div class="jumbotron text-center">
@@ -7,14 +7,70 @@
     <p><%= asset.description %></p>
 </div>
 <div>
-    <p><%= asset.IMEI %></p>
-    <p><%= asset.color %></p>
-    <p><%= asset.Model %></p>
-    <p><%= asset.OS %></p>
-    <p><%= asset.RAM %></p>
-    <p><%= asset.Storage %></p>
-    <p><%= asset.accessories %></p>
-    <p><%= asset.owner %></>p
-    <p><%= asset.email %></p>
-    <p><%= asset.assignedDate %></p>
+    <table class="table table-bordered table-hover table-striped">
+        <tbody>
+            <tr>
+                <td>IMEI</td>
+                <td>
+                    <p><%= asset.IMEI %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Color</td>
+                <td>
+                    <p><%= asset.color %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Model</td>
+                <td>
+                    <p><%= asset.Model %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>OS</td>
+                <td>
+                    <p><%= asset.OS %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>RAM</td>
+                <td>
+                    <p><%= asset.RAM %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Storage</td>
+                <td>
+                    <p><%= asset.Storage %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Accesories</td>
+                <td>
+                    <p><%= asset.accesories %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Owner</td>
+                <td>
+                    <p><%= asset.owner %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>
+                    <p><%= asset.email %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Assigned On</td>
+                <td>
+                    <p><%= asset.assignedDate %></p>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
 </div>
