@@ -3,18 +3,16 @@ const Schema = mongoose.Schema;
 
 // create a schema
 const assetSchema = new Schema({
-  name: String,
-  IMEI:String,
-  description: String,
-  color:String,
-  Model:String,
-  OS:String,
-  RAM:String,
-  Storage:String,
-  accesories:String,
+  AssetDescription: String,
+  AssetType:String,
+  AssetSubType: String,
+  AssetSerial:String,
   owner:String,
-  email:String,
-  assignedDate:String
+  userType:String,
+  assignedDate:String,
+  givenAccesories:String,
+  missingAccessories:String,
+  Comments:String 
 });
 
 // middleware -----

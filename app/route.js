@@ -6,7 +6,9 @@ const AssetsController = require('./controllers/assets.controller');
 
 router.get('/', AssetsController.showAssets);
 
-router.get('/:IMEI/history',AssetsController.showAssetHistory)
+router.get('/:AssetSerial/history',AssetsController.showAssetHistory);
+
+router.get('/assignmentHistory',AssetsController.showAssignmentHistory);
 
 router.get('/seed',AssetsController.seedAssets);
 
@@ -14,15 +16,17 @@ router.get('/create',AssetsController.showCreate);
 
 router.post('/create',AssetsController.processCreate);
 
-router.get('/:IMEI/edit',AssetsController.showEdit);
+router.get('/:AssetSerial/edit',AssetsController.showEdit);
 
-router.post('/:IMEI',AssetsController.processEdit);
+router.post('/:AssetSerial',AssetsController.processEdit);
 
-router.get('/:IMEI', AssetsController.showSingle);
+router.get('/:AssetSerial', AssetsController.showSingle);
 
-router.get('/:IMEI/delete',AssetsController.deleteAsset);
+router.get('/:AssetSerial/delete',AssetsController.deleteAsset);
 
-//router.post('/:IMEI',AssetsController.assignNewOwner);
+//router.post('/:AssetSerial',AssetsController.assignNewOwner);
+
+
 
 
 module.exports = router;

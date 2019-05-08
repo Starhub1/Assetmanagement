@@ -11,7 +11,8 @@ module.exports = {
     showEdit: showEdit,
     processEdit: processEdit,
     deleteAsset: deleteAsset,
-    showAssetHistory: showAssetHistory
+    showAssetHistory: showAssetHistory,
+    showAssignmentHistory: showAssignmentHistory
 };
 
 /**
@@ -39,8 +40,8 @@ function showAssets(req, res) {
 function showSingle(req, res) {
     // get a single Asset
     Asset.findOne({
-            IMEI: req.params.IMEI
-        },
+        AssetSerial: req.params.AssetSerial
+    },
         (err, asset) => {
             if (err) {
                 res.status(404);
@@ -61,21 +62,21 @@ function showSingle(req, res) {
 function seedAssets(req, res) {
     // create some Assets
     const Assets = [{
-            name: "iphone 10",
-            description: "iphone 10 "
-        },
-        {
-            name: "iPhone 8",
-            description: "iphone 8 "
-        },
-        {
-            name: "Samsung Galaxy s10",
-            description: "Samsung Galaxy s10"
-        },
-        {
-            name: "iPad Air2 ",
-            description: "ipad Air2"
-        }
+        name: "iphone 10",
+        description: "iphone 10 "
+    },
+    {
+        name: "iPhone 8",
+        description: "iphone 8 "
+    },
+    {
+        name: "Samsung Galaxy s10",
+        description: "Samsung Galaxy s10"
+    },
+    {
+        name: "iPad Air2 ",
+        description: "ipad Air2"
+    }
     ];
 
     // use the Asset model to insert/save
@@ -104,8 +105,8 @@ function showCreate(req, res) {
  */
 function processCreate(req, res) {
     // validate information
-    req.checkBody("name", "Name is required.").notEmpty();
-    req.checkBody("IMEI", "IMEI is required.").notEmpty();
+    req.checkBody("AssetDescription", "Name is required.").notEmpty();
+    req.checkBody("AssetSerial", "Asset Serial is required.").notEmpty();
 
     // if there are errors, redirect and save errors to flash
     const errors = req.validationErrors();
@@ -116,18 +117,17 @@ function processCreate(req, res) {
 
     // create a new Asset
     const asset = new Asset({
-        name: req.body.name,
-        IMEI: req.body.IMEI,
-        description: req.body.description,
-        color: req.body.color,
-        Model: req.body.Model,
-        OS: req.body.OS,
-        RAM: req.body.RAM,
-        Storage: req.body.Storage,
-        accesories: req.body.accesories,
+        AssetDescription: req.body.AssetDescription,
+        AssetType: req.body.AssetType,
+        AssetSubType: req.body.AssetSubType,
+        AssetSerial: req.body.AssetSerial,
         owner: req.body.owner,
         email: req.body.email,
-        assignedDate: req.body.assignedDate
+        userType: req.body.userType,
+        assignedDate: req.body.assignedDate,
+        givenAccesories: req.body.givenAccesories,
+        missingAccessories: req.body.missingAccessories,
+        Comments: req.body.Comments
     });
 
     // save Asset
@@ -138,18 +138,18 @@ function processCreate(req, res) {
         req.flash("success", "Successfuly created Asset!");
 
         // redirect to the newly created Asset
-        res.redirect(`/${asset.IMEI}`);
+        res.redirect(`/${asset.AssetSerial}`);
     });
 
     //create History table
     const history = new History({
         assetName: req.body.name,
-        IMEI: req.body.IMEI
+        AssetSerial: req.body.AssetSerial
     });
 
     history.save(err => {
         if (err) throw err;
-        console.log("History table added");
+        console.log("History Entry added");
     });
 }
 
@@ -158,8 +158,8 @@ function processCreate(req, res) {
  */
 function showEdit(req, res) {
     Asset.findOne({
-            IMEI: req.params.IMEI
-        },
+        AssetSerial: req.params.AssetSerial
+    },
         (err, asset) => {
             res.render("pages/edit", {
                 asset: asset,
@@ -173,62 +173,59 @@ function showEdit(req, res) {
  * Process the edit form
  */
 function processEdit(req, res) {
-    if (req.body.name) {
+    if (req.body.AssetDescription) {
         // validate information
-        req.checkBody("name", "Name is required.").notEmpty();
-        req.checkBody("IMEI", "IMEI is required.").notEmpty();
+        req.checkBody("AssetDescription", "AssetDescription is required.").notEmpty();
+        req.checkBody("AssetSerial", "AssetSerial is required.").notEmpty();
 
         // if there are errors, redirect and save errors to flash
         const errors = req.validationErrors();
         if (errors) {
             req.flash("errors", errors.map(err => err.msg));
-            return res.redirect(`/${req.params.IMEI}/edit`);
+            return res.redirect(`/${req.params.AssetSerial}/edit`);
         }
 
         // finding a current Asset
         Asset.findOne({
-                IMEI: req.params.IMEI
-            },
+            AssetSerial: req.params.AssetSerial
+        },
             (err, asset) => {
                 // updating that Asset
-                (asset.IMEI = req.body.IMEI),
-                (asset.name = req.body.name),
-                (asset.description = req.body.description),
-                (asset.color = req.body.color),
-                (asset.Model = req.body.Model),
-                (asset.OS = req.body.OS),
-                (asset.RAM = req.body.RAM),
-                (asset.Storage = req.body.Storage),
-                (asset.accesories = req.body.accesories),
-                asset.save(err => {
-                    if (err) throw err;
+                (asset.AssetSerial = req.body.AssetSerial),
+                    (asset.AssetDescription = req.body.AssetDescription),
+                    (asset.AssetType = req.body.AssetType),
+                    (asset.AssetSubType = req.body.AssetSubType),
+                    (asset.givenAccesories = req.body.givenAccesories),
+                    (asset.missingAccessories = req.body.missingAccessories),
+                    (asset.Comments = req.body.Comments),
+                    asset.save(err => {
+                        if (err) throw err;
 
-                    // success flash message
-                    // redirect back to the /Assets
-                    req.flash("success", "Successfully updated Asset.");
-                    res.redirect(`/${req.params.IMEI}`);
-                });
+                        // success flash message
+                        // redirect back to the /Assets
+                        req.flash("success", "Successfully updated Asset.");
+                        res.redirect(`/${req.params.AssetSerial}`);
+                    });
             }
         );
     } else if (req.body.email) {
-        let IMEI = req.params.IMEI;
+        let AssetSerial = req.params.AssetSerial;
         let owner = req.body.owner;
         let email = req.body.email;
         let fromDate;
         req.checkBody("email", "Email is required.").notEmpty();
-        req.checkBody("owner", "Owner is required.").notEmpty();
 
         // if there are errors, redirect and save errors to flash
         const errors = req.validationErrors();
         if (errors) {
             req.flash("errors", errors.map(err => err.msg));
-            //return res.redirect(`/${req.params.IMEI}`);
+            //return res.redirect(`/${req.params.AssetSerial}`);
         }
 
         // finding a current Asset
         Asset.findOne({
-                IMEI: req.params.IMEI
-            },
+            AssetSerial: req.params.AssetSerial
+        },
             (err, Asset) => {
                 // updating that Asset
                 Asset.email = req.body.email;
@@ -272,18 +269,15 @@ function processEdit(req, res) {
 
                     //Update the History Table
                     History.findOne({
-                            IMEI: IMEI
-                        },
+                        AssetSerial: AssetSerial
+                    },
                         (err, history) => {
                             if (err) {
                                 res.status(404);
                                 res.send("Asset not found!");
                             }
-                            console.log("IMEI number is" + IMEI);
-                            console.log(history.historyArr.length + "is");
                             if (history.historyArr.length > 0) {
                                 let data = history.historyArr;
-                                console.log(data);
                                 data[data.length - 1].toDate = new Date().toLocaleString();
                                 data.push({
                                     owner: Asset.owner,
@@ -299,7 +293,7 @@ function processEdit(req, res) {
                                     fromDate: fromDate,
                                     toDate: ""
                                 };
-                                history.historyArr=data;
+                                history.historyArr = data;
                             }
 
                             history.save(err => {
@@ -319,8 +313,8 @@ function processEdit(req, res) {
  */
 function deleteAsset(req, res) {
     Asset.remove({
-            IMEI: req.params.IMEI
-        },
+        AssetSerial: req.params.AssetSerial
+    },
         err => {
             // set flash data
             // redirect back to the Assets page
@@ -336,12 +330,12 @@ function deleteAsset(req, res) {
 
 function showAssetHistory(req, res) {
     History.findOne({
-            IMEI: req.params.IMEI
-        },
+        AssetSerial: req.params.AssetSerial
+    },
         (err, history) => {
             if (err) {
                 res.status(404);
-                res.send("Asset not found!");
+                res.send("History not found!");
             }
 
             res.render("pages/assetHistory", {
@@ -350,4 +344,37 @@ function showAssetHistory(req, res) {
             });
         }
     );
+}
+
+/**
+ *Show Assignment history of all devices  
+ */
+
+function showAssignmentHistory(req, res) {
+
+    History.find({
+
+    },
+        (err, allHistory) => {
+            if (err) {
+                res.status(404);
+                res.send("History not found!");
+            }
+            console.log(allHistory);
+            res.render("pages/assignmentHistory", {
+                allHistory: allHistory,
+                success: req.flash("success")
+            });
+        }
+    );
+
+
+    // History.find({}).toArray(function (err, allHistory) {
+    //     if (err) throw err
+
+    //     res.render('pages/assignmentHistory', {
+    //         allHistory: allHistory,
+    //         success: req.flash('success')
+    //     })
+    // });
 }

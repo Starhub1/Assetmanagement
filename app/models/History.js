@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 // create a schema
 const historySchema = new Schema({
-  assetName: String,
-  IMEI:String,
+ AssetDescription: String,
+  AssetSerial:String,
   historyArr:[{
       owner:String,
       email:String,

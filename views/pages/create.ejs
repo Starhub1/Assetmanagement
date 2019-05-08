@@ -6,58 +6,63 @@
     <div class="col-sm-6 col-sm-offset-3">
 
         <% if (errors.length > 0) { %>
-            <div class="alert alert-danger">
-                <% for (error of errors) { %>
-                    <%= error %><br>
-                <% } %>
-            </div>
+        <div class="alert alert-danger">
+            <% for (error of errors) { %>
+            <%= error %><br>
+            <% } %>
+        </div>
         <% } %>
-        
+
         <form action="/create" method="POST">
 
             <div class="form-group">
-                <label>Name</label>
-                <input type="text" name="name" class="form-control" required>
+                <label>Asset Description</label>
+                <input type="text" name="AssetDescription" class="form-control" required>
+            </div>
+
+            <!-- Single button -->
+            <div class="form-group">
+                <label>Asset Type</label>
+                <select name="AssetType" class="form-control">
+                    <option value="Device" selected>Device</option>
+                    <option value="Accessory">Accessory</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Asset Sub-Type</label>
+                <select name="AssetSubType" class="form-control">
+                    <option value="Mobile" selected>Mobile</option>
+                    <option value="Laptop">Laptop</option>
+                    <option value="iPad">iPad</option>
+                    <option value="Tab">Tab</option>
+                    <option value="Cover">Cover</option>
+                    <option value="Cable">Cable</option>
+                    <option value="Server">Server</option>
+                    <option value="Monitor">Monitor</option>
+                    <option value="Keyboard">Keyboard</option>
+                    <option value="Mouse">Mouse</option>
+                    <option value="Lock">Lock</option>
+                    <option value="Security Mount">Security Mount</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Asset Serial</label>
+                <input type="text" name="AssetSerial" class="form-control">
             </div>
 
             <div class="form-group">
-                <label>IMEI</label>
-                <input type="number" name="IMEI" class="form-control" required>
+                <label>Given Accessories</label>
+                <input type="text" name="givenAccesories" class="form-control">
             </div>
 
             <div class="form-group">
-                <label>Color</label>
-                <input type="text" name="color" class="form-control">
+                <label>Missing Accessories</label>
+                <input type="text" name="missingAccessories" class="form-control">
             </div>
 
             <div class="form-group">
-                <label>Model</label>
-                <input type="text" name="Model" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>OS</label>
-                <input type="text" name="OS" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>RAM</label>
-                <input type="text" name="RAM" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Storage</label>
-                <input type="text" name="Storage" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Accessories</label>
-                <input type="text" name="accesories" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Description</label>
-                <textarea name="description" rows="5" class="form-control"></textarea>
+                <label>Comments</label>
+                <input type="text" name="Comments" class="form-control">
             </div>
 
             <div class="form-group">
@@ -67,4 +72,6 @@
         </form>
 
     </div>
+</div>
+
 </div>

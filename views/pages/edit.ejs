@@ -1,62 +1,67 @@
 <div class="jumbotron text-center">
-    <h1>Editing <%= asset.name %></h1>
+    <h1>Editing <%= asset.AssetDescription %></h1>
 </div>
 
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
 
         <% if (errors.length > 0) { %>
-            <div class="alert alert-danger">
-                <% for (error of errors) { %>
-                    <%= error %><br>
-                <% } %>
-            </div>
+        <div class="alert alert-danger">
+            <% for (error of errors) { %>
+            <%= error %><br>
+            <% } %>
+        </div>
         <% } %>
-        
-        <form action="/<%= asset.IMEI %>" method="POST">
+
+        <form action="/<%= asset.AssetSerial %>" method="POST">
 
             <div class="form-group">
-                <label>Name</label>
-                <input type="text" name="name" class="form-control" value="<%= asset.name %>">
+                <label>Asset Description</label>
+                <input type="text" name="name" class="form-control" value="<%= asset.AssetDescription %>">
             </div>
             <div class="form-group">
-                <label>IMEI</label>
-                <input type="number" name="IMEI" class="form-control" required value="<%= asset.IMEI %>">
-            </div>
-
-            <div class="form-group">
-                <label>Color</label>
-                <input type="text" name="color" class="form-control" value="<%= asset.color %>">
+                <label>Asset Serial</label>
+                <input type="text" name="AssetSerial" class="form-control" required value="<%= asset.AssetSerial %>">
             </div>
 
             <div class="form-group">
-                <label>Model</label>
-                <input type="text" name="Model" class="form-control" value="<%= asset.Model %>">
+                <label>Asset Type</label>
+                <input type="text" name="AssetType" class="form-control" value="<%= asset.AssetType %>">
             </div>
 
             <div class="form-group">
-                <label>OS</label>
-                <input type="text" name="OS" class="form-control" value="<%= asset.OS %>">
+                <label>Asset Sub-Type</label>
+                <input type="text" name="AssetSubType" class="form-control" value="<%= asset.AssetSubType %>">
+            </div>
+
+            <!-- <div class="form-group">
+                <label>Owner</label>
+                <input type="text" name="email" class="form-control" value="<%= asset.email %>">
             </div>
 
             <div class="form-group">
-                <label>RAM</label>
-                <input type="text" name="RAM" class="form-control" value="<%= asset.RAM %>">
+                <label>QA/Dev</label>
+                <input type="text" name="userType" class="form-control" value="<%= asset.userType %>">
             </div>
 
             <div class="form-group">
-                <label>Storage</label>
-                <input type="text" name="Storage" class="form-control" value="<%= asset.Storage %>">
+                <label>Assigned On</label>
+                <input type="text" name="assignedDate" class="form-control" value="<%= asset.assignedDate %>">
+            </div> -->
+
+            <div class="form-group">
+                <label>Given Accessories</label>
+                <input type="text" name="givenAccesories" class="form-control" value="<%= asset.givenAccesories %>">
             </div>
 
             <div class="form-group">
-                <label>Accessories</label>
-                <input type="text" name="accesories" class="form-control" value="<%= asset.accesories %>">
+                <label>Missing Accessories</label>
+                <input type="text" name="missingAccessories" class="form-control" value="<%= asset.missingAccessories %>">
             </div>
 
             <div class="form-group">
-                <label>Description</label>
-                <textarea name="description" rows="5" class="form-control"><%= asset.description %></textarea>
+                <label>Comments</label>
+                <input type="text" name="Comments" class="form-control" value="<%= asset.Comments %>">
             </div>
 
             <div class="form-group">
