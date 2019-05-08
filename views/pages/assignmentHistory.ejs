@@ -11,7 +11,7 @@
     <thead>
       <tr>
         <th>Asset</th>
-        <th>IMEI</th>
+        <th>AssetSerial</th>
         <th colspan="4">&ensp;&ensp;&ensp; Owner &ensp;&ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Email 
           &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
           &emsp;&emsp;&emsp;&emsp;&emsp; From &ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
@@ -23,7 +23,7 @@
       <% for (var history of allHistory) { %>
       <tr>
         <td><%= history.assetName %></td>
-        <td><%= history.IMEI %></td>
+        <td><%= history.AssetSerial %></td>
         <% if(history.historyArr.length>0) { %>
         <td>
           <table class="table table-bordered table-hover table-striped">
