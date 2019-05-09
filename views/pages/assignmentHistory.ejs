@@ -1,52 +1,55 @@
 <% if (success.length > 0) { %>
-<div class="alert alert-success"><%= success %></div>
-<% } %>
-
-<div class="jumbotron text-center">
-  <h1>Assignment History</h1>
-  <h2>of All Assets</h2>
-</div>
-<div>
-  <table class="table table-bordered table-hover table-striped">
-    <thead>
-      <tr>
-        <th>Asset</th>
-        <th>AssetSerial</th>
-        <th colspan="4">&ensp;&ensp;&ensp; Owner &ensp;&ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Email 
-          &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-          &emsp;&emsp;&emsp;&emsp;&emsp; From &ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-          To&emsp;&emsp13;</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% for (var history of allHistory) { %>
-      <tr>
-        <td><%= history.assetName %></td>
-        <td><%= history.AssetSerial %></td>
-        <% if(history.historyArr.length>0) { %>
-        <td>
-          <table class="table table-bordered table-hover table-striped">
-
-            <tbody>
-              <% for (var hist of history.historyArr.reverse()) { %>
-
-        <td><%= hist.owner %></td>
-        <td><%= hist.email %></td>
-        <td><%= hist.fromDate %></td>
-        <td><%= hist.toDate %></td>
-      </tr>
-      <% } %>
+  <div class="alert alert-success"><%= success %></div>
+  <% } %>
+  
+  <div class="jumbotron text-center">
+    <h1>Assignment History</h1>
+    <h2>of All Assets</h2>
+  </div>
+  <div>
+    <table class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th>Asset</th>
+          <th>AssetSerial</th>
+          <th colspan="4">&ensp;&ensp;&ensp;
+            Owner &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;
+            Email&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            QA/Dev &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+            From &ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+            To&emsp;&emsp13;</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <% for (var history of allHistory) { %>
+        <tr>
+          <td><%= history.AssetDescription %></td>
+          <td><%= history.AssetSerial %></td>
+          <% if(history.historyArr.length>0) { %>
+          <td>
+            <table class="table table-bordered table-hover table-striped">
+  
+              <tbody>
+                <% for (var hist of history.historyArr.reverse()) { %>
+  
+          <td><%= hist.owner %></td>
+          <td><%= hist.email %></td>
+          <td><%= hist.userType %></td>
+          <td><%= hist.fromDate %></td>
+          <td><%= hist.toDate %></td>
+        </tr>
+        <% } %>
+      </tbody>
+  
+    </table>
+    </td>
+    <% } %>
+    <% if(history.historyArr.length==0) { %>
+    <td></td>
+    <% } %>
+    </tr>
+    <% } %>
     </tbody>
-
-  </table>
-  </td>
-  <% } %>
-  <% if(history.historyArr.length==0) { %>
-  <td></td>
-  <% } %>
-  </tr>
-  <% } %>
-  </tbody>
-  </table>
-</div>
+    </table>
+  </div>

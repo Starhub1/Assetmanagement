@@ -8,6 +8,7 @@ const assetSchema = new Schema({
   AssetSubType: String,
   AssetSerial:String,
   owner:String,
+  email:String,
   userType:String,
   assignedDate:String,
   givenAccesories:String,

@@ -24,7 +24,7 @@ router.get('/:AssetSerial', AssetsController.showSingle);
 
 router.get('/:AssetSerial/delete',AssetsController.deleteAsset);
 
-//router.post('/:AssetSerial',AssetsController.assignNewOwner);
+router.post('/:AssetSerial/assignNewOwner',AssetsController.assignNewOwner);
 
 
 

@@ -12,7 +12,8 @@ module.exports = {
     processEdit: processEdit,
     deleteAsset: deleteAsset,
     showAssetHistory: showAssetHistory,
-    showAssignmentHistory: showAssignmentHistory
+    showAssignmentHistory: showAssignmentHistory,
+    assignNewOwner:assignNewOwner
 };
 
 /**
@@ -143,7 +144,7 @@ function processCreate(req, res) {
 
     //create History table
     const history = new History({
-        assetName: req.body.name,
+        AssetDescription: req.body.AssetDescription,
         AssetSerial: req.body.AssetSerial
     });
 
@@ -173,7 +174,7 @@ function showEdit(req, res) {
  * Process the edit form
  */
 function processEdit(req, res) {
-    if (req.body.AssetDescription) {
+    
         // validate information
         req.checkBody("AssetDescription", "AssetDescription is required.").notEmpty();
         req.checkBody("AssetSerial", "AssetSerial is required.").notEmpty();
@@ -204,108 +205,26 @@ function processEdit(req, res) {
                         // success flash message
                         // redirect back to the /Assets
                         req.flash("success", "Successfully updated Asset.");
-                        res.redirect(`/${req.params.AssetSerial}`);
-                    });
-            }
-        );
-    } else if (req.body.email) {
-        let AssetSerial = req.params.AssetSerial;
-        let owner = req.body.owner;
-        let email = req.body.email;
-        let fromDate;
-        req.checkBody("email", "Email is required.").notEmpty();
-
-        // if there are errors, redirect and save errors to flash
-        const errors = req.validationErrors();
-        if (errors) {
-            req.flash("errors", errors.map(err => err.msg));
-            //return res.redirect(`/${req.params.AssetSerial}`);
-        }
-
-        // finding a current Asset
-        Asset.findOne({
-            AssetSerial: req.params.AssetSerial
-        },
-            (err, Asset) => {
-                // updating that Asset
-                Asset.email = req.body.email;
-                Asset.owner = req.body.owner;
-                Asset.assignedDate = new Date().toLocaleString();
-                fromDate = Asset.assignedDate;
-
-                Asset.save(err => {
-                    if (err) throw err;
-
-                    // success flash message
-                    // redirect back to the /Assets
-                    req.flash("success", "Successfully Assigned the Owner.");
-                    //res.redirect('/');
-
-                    //send a mail
-                    var transporter = nodemailer.createTransport({
-                        service: "gmail",
-                        auth: {
-                            user: "mohdnasir94@gmail.com",
-                            pass: "tina_@!md"
-                        }
+                        res.redirect(`/${asset.AssetSerial}`);
                     });
 
-                    var mailOptions = {
-                        from: "mohdnasir94@gmail.com",
-                        to: req.body.email,
-                        subject: Asset.name + " has been assigned to you on " + Asset.assignedDate,
-                        text: req.body.message
-                    };
-
-                    transporter.sendMail(mailOptions, function (error, info) {
-                        if (error) {
-                            console.log(error);
-                        } else {
-                            console.log("Email sent: " + info.response);
-                        }
-                    });
-
-                    req.flash("success", "Email sent successfully");
-
-                    //Update the History Table
                     History.findOne({
-                        AssetSerial: AssetSerial
+                        AssetSerial: req.params.AssetSerial
                     },
                         (err, history) => {
-                            if (err) {
-                                res.status(404);
-                                res.send("Asset not found!");
-                            }
-                            if (history.historyArr.length > 0) {
-                                let data = history.historyArr;
-                                data[data.length - 1].toDate = new Date().toLocaleString();
-                                data.push({
-                                    owner: Asset.owner,
-                                    email: Asset.email,
-                                    fromDate: Asset.assignedDate,
-                                    toDate: ""
-                                });
-                                history.historyArr = data;
-                            } else {
-                                let data = {
-                                    owner: owner,
-                                    email: email,
-                                    fromDate: fromDate,
-                                    toDate: ""
-                                };
-                                history.historyArr = data;
-                            }
-
+                            if (err) throw err;
+            
+                            history.AssetDescription = req.body.AssetDescription,
+                                history.AssetSerial = req.body.AssetSerial
                             history.save(err => {
                                 if (err) throw err;
-                                console.log("History table updated");
+                                console.log('Updated the history Entry');
                             });
                         }
                     );
-                });
             }
         );
-    }
+        
 }
 
 /**
@@ -337,7 +256,7 @@ function showAssetHistory(req, res) {
                 res.status(404);
                 res.send("History not found!");
             }
-
+            console.log(history);
             res.render("pages/assetHistory", {
                 history: history,
                 success: req.flash("success")
@@ -367,14 +286,110 @@ function showAssignmentHistory(req, res) {
             });
         }
     );
-
-
-    // History.find({}).toArray(function (err, allHistory) {
-    //     if (err) throw err
-
-    //     res.render('pages/assignmentHistory', {
-    //         allHistory: allHistory,
-    //         success: req.flash('success')
-    //     })
-    // });
+    
 }
+/**
+     * Assign New Owner
+     */
+
+    function assignNewOwner(req,res){
+        let AssetSerial = req.params.AssetSerial;
+        let owner = req.body.owner;
+        let email = req.body.email;
+        let fromDate;
+        req.checkBody("email", "Email is required.").notEmpty();
+
+        // if there are errors, redirect and save errors to flash
+        const errors = req.validationErrors();
+        if (errors) {
+            req.flash("errors", errors.map(err => err.msg));
+            //return res.redirect(`/${req.params.AssetSerial}`);
+        }
+
+        // finding a current Asset
+        Asset.findOne({
+            AssetSerial: req.params.AssetSerial
+        },
+            (err, Asset) => {
+                // updating that Asset
+                Asset.email = req.body.email;
+                Asset.owner = req.body.owner;
+                Asset.assignedDate = new Date().toLocaleString();
+                fromDate = Asset.assignedDate;
+                Asset.userType=req.body.userType;
+
+                Asset.save(err => {
+                    if (err) throw err;
+
+                    // success flash message
+                    // redirect back to the /Assets
+                    req.flash("success", "Successfully Assigned the Owner.");
+                    //res.redirect('/');
+
+                    //send a mail
+                    var transporter = nodemailer.createTransport({
+                        service: "gmail",
+                        auth: {
+                            user: "mohdnasir94@gmail.com",
+                            pass: "tina_@!md"
+                        }
+                    });
+
+                    var mailOptions = {
+                        from: "mohdnasir94@gmail.com",
+                        to: req.body.email,
+                        subject: Asset.AssetDescription + " has been assigned to you on " + Asset.assignedDate,
+                        text: req.body.message
+                    };
+
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            console.log("Email sent: " + info.response);
+                        }
+                    });
+
+                    req.flash("success", "Email sent successfully");
+
+                    //Update the History Table
+                    History.findOne({
+                        AssetSerial: AssetSerial
+                    },
+                        (err, history) => {
+                            if (err) {
+                                res.status(404);
+                                res.send("Asset not found!");
+                            }
+                            if (history.historyArr.length > 0) {
+                                let data = history.historyArr;
+                                data[data.length - 1].toDate = new Date().toLocaleString();
+                                data.push({
+                                    owner: Asset.owner,
+                                    email: Asset.email,
+                                    fromDate: Asset.assignedDate,
+                                    userType:Asset.userType,
+                                    toDate: ""
+                                });
+                                history.historyArr = data;
+                            } else {
+                                let data = {
+                                    owner: owner,
+                                    email: email,
+                                    fromDate: fromDate,
+                                    userType:Asset.userType,
+                                    toDate: ""
+                                };
+                                history.historyArr = data;
+                            }
+
+                            history.save(err => {
+                                if (err) throw err;
+                                console.log("History table updated");
+                            });
+                        }
+                    );
+                });
+            }
+        );
+     }

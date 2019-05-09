@@ -1,4 +1,3 @@
-
 <div class="jumbotron text-center">
     <h1>All Assets</h1>
 </div>
@@ -42,7 +41,7 @@
                 <!-- Trigger the modal -->
                 <a href="#myModal" class="btn btn-sm btn-primary" data-toggle="modal"
                     data-asset-name="<%= assets[i].AssetSerial %>">Assign</a>
-                <a href="/<%= assets[i].AssetSerial %>/history" class="btn btn-sm btn-primary">History</a>
+                <a href="/<%= assets[i].AssetSerial %>/history" class="btn btn-sm btn-primary">Owner's History</a>
             </td>
         </tr>
         <% } %>
@@ -65,13 +64,20 @@
                 <div class="modal-body mx-3">
                     <div class="md-form mb-5">
                         <label data-error="wrong" data-success="right" for="defaultForm-email">Name</label>
-                        <input type="text" name="owner" id="defaultForm-owner" class="form-control validate" required />
+                        <input type="text" name="owner" id="defaultForm-owner" class="form-control validate" />
                     </div>
                     <div class="md-form mb-5">
                         <label data-error="wrong" data-success="right" for="defaultForm-email">Email</label>
                         <input type="text" name="email" id="defaultForm-email" class="form-control validate" required />
                     </div>
-
+                    <div class="md-form mb-5">
+                        <label data-error="wrong" data-success="right" for="defaultForm-userType">QA/Dev</label>
+                        <select name="userType" id="defaultForm-userType" class="form-control validate">
+                            <option value="QA" selected>QA</option>
+                            <option value="Dev">Dev</option>
+                            <option value="All">All</option>
+                        </select>
+                    </div>
                     <div class="md-form mb-4">
                         <label data-error="wrong" data-success="right" for="defaultForm-message">Message</label>
                         <textarea rows="5" type="password" name="message" id="defaultForm-message"
@@ -89,7 +95,7 @@
     $('#myModal').on('show.bs.modal', function (e) {
         var assetName = $(e.relatedTarget).data('asset-name');
         $(e.currentTarget).find('#modelTitle').text(assetName);
-        $(e.currentTarget).find('#assignNewOwner').attr("action", "/" + assetName);
+        $(e.currentTarget).find('#assignNewOwner').attr("action", "/" + assetName+"/assignNewOwner");
     });
 
     $('#assignNewOwner').submit(function (event) {
@@ -98,7 +104,8 @@
         // Get some values from elements on the page:
         var $form = $(this),
             owner = $form.find("#defaultForm-owner").val(),
-            email = $form.find("#defaultForm-email").val()
+            email = $form.find("#defaultForm-email").val(),
+            userType =$form.find("#defaultForm-userType").val()
         message = $form.find("#defaultForm-message").val()
         url = $form.attr("action");
 
@@ -106,6 +113,7 @@
         $.post(url, {
             owner: owner,
             email: email,
+            userType:userType,
             message: message
         }, function (data, status) {
 

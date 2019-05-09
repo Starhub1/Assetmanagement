@@ -3,7 +3,7 @@
 <% } %>
 
 <div class="jumbotron text-center">
-  <h1><%= history.assetName %></h1>
+  <h1><%= history.AssetDescription %></h1>
   <h2>Assignment History</h2>
 </div>
 <div>
@@ -12,6 +12,7 @@
       <tr>
         <th>Owner</th>
         <th>Email</th>
+        <th>QA/Dev</th>
         <th>From Date</th>
         <th>To Date</th>
       </tr>
@@ -22,6 +23,7 @@
       <tr>
         <td><%= history.owner %></td>
         <td><%= history.email %></td>
+        <td><%= history.userType %></td>        
         <td><%= history.fromDate %></td>
         <td><%= history.toDate %></td>
       </tr>

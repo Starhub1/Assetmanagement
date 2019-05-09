@@ -3,13 +3,14 @@ const Schema = mongoose.Schema;
 
 // create a schema
 const historySchema = new Schema({
- AssetDescription: String,
-  AssetSerial:String,
-  historyArr:[{
-      owner:String,
-      email:String,
-      fromDate:String,
-      toDate:String
+  AssetDescription: String,
+  AssetSerial: String,
+  historyArr: [{
+    owner: String,
+    email: String,
+    userType: String,
+    fromDate: String,
+    toDate: String
   }]
 });
 
