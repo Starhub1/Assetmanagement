@@ -11,12 +11,12 @@
             <th>Asset Sub-Type</th>
             <th>Asset Serial</th>
             <th>Owner</th>
-            <th>QA/Dev</th>
+            <!-- <th>QA/Dev</th> -->
             <th>Assigned On</th>
             <th>Given Accessories</th>
             <th>Missing Accessories</th>
-            <th>Comments</th>
-            <th></th>
+            <!-- <th>Comments</th> -->
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -28,20 +28,22 @@
             <td><%= assets[i].AssetSubType %></td>
             <td><%= assets[i].AssetSerial %></td>
             <td><%= assets[i].email %></td>
-            <td><%= assets[i].userType %></td>
+            <!-- <td><%= assets[i].userType %></td> -->
             <td><%= assets[i].assignedDate %></td>
             <td><%= assets[i].givenAccesories %></td>
             <td><%= assets[i].missingAccessories %></td>
-            <td><%= assets[i].Comments %></td>
+            <!-- <td><%= assets[i].Comments %></td> -->
             <td>
                 <a href="/<%= assets[i].AssetSerial %>/edit" class="btn btn-sm btn-primary">Edit</a>
-                <a href="/<%= assets[i].AssetSerial %>/delete" class="btn btn-sm btn-danger"
-                    onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
-
                 <!-- Trigger the modal -->
                 <a href="#myModal" class="btn btn-sm btn-primary" data-toggle="modal"
                     data-asset-name="<%= assets[i].AssetSerial %>">Assign</a>
-                <a href="/<%= assets[i].AssetSerial %>/history" class="btn btn-sm btn-primary">Owner's History</a>
+                    
+                <a href="/<%= assets[i].AssetSerial %>/delete" class="btn btn-sm btn-danger"
+                    onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+
+                
+                <a href="/<%= assets[i].AssetSerial %>/history" class="btn btn-sm btn-primary">Assignment History</a>
             </td>
         </tr>
         <% } %>
