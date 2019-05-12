@@ -1,8 +1,13 @@
 <div class="jumbotron text-center">
     <h1>All Assets</h1>
 </div>
-
-<table class="table table-bordered table-hover table-striped">
+ <div class="row" id="search-col">
+        <div class="col-lg-12">
+            <input type="search" id="search" value="" class="form-control" 
+            placeholder="Search using Asset Description, Asset Type, Asset-Subtype or Asset Serial">
+        </div>
+    </div>
+<table class="table table-bordered table-hover table-striped" id="asset-table">
     <thead>
         <tr>
             <th>S.No</th>
@@ -23,33 +28,32 @@
         <% for (var i=0; i<assets.length ; i++) { %>
         <tr>
             <td><%= i+1 %></td>
-            <td><a href="/<%= assets[i].AssetSerial %>"><%= assets[i].AssetDescription %></a></td>
+            <td><a id="AssetDescription" href="/<%= assets[i].id %>"><%= assets[i].AssetDescription %></a></td>
             <td><%= assets[i].AssetType %></td>
             <td><%= assets[i].AssetSubType %></td>
             <td><%= assets[i].AssetSerial %></td>
             <td><%= assets[i].email %></td>
             <!-- <td><%= assets[i].userType %></td> -->
             <td><%= assets[i].assignedDate %></td>
-            <td><%= assets[i].givenAccesories %></td>
+            <td><%= assets[i].givenAccessories %></td>
             <td><%= assets[i].missingAccessories %></td>
             <!-- <td><%= assets[i].Comments %></td> -->
             <td>
-                <a href="/<%= assets[i].AssetSerial %>/edit" class="btn btn-sm btn-primary">Edit</a>
+                <a href="/<%= assets[i].id %>/edit" class="btn btn-sm btn-primary">Edit</a>
                 <!-- Trigger the modal -->
                 <a href="#myModal" class="btn btn-sm btn-primary" data-toggle="modal"
-                    data-asset-name="<%= assets[i].AssetSerial %>">Assign</a>
+                    data-asset-id="<%= assets[i].id %>" data-asset-name="<%= assets[i].AssetDescription %>">Assign</a>
                     
-                <a href="/<%= assets[i].AssetSerial %>/delete" class="btn btn-sm btn-danger"
+                <a href="/<%= assets[i].id %>/delete" class="btn btn-sm btn-danger"
                     onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
 
                 
-                <a href="/<%= assets[i].AssetSerial %>/history" class="btn btn-sm btn-primary">Assignment History</a>
+                <a href="/<%= assets[i].id %>/history" class="btn btn-sm btn-primary">Assignment History</a>
             </td>
         </tr>
         <% } %>
     </tbody>
 </table>
-
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true">
@@ -60,7 +64,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <div class="alert alert-success" id="alert-Message"></div>
+                <div class="alert alert-success" id="alert-Message" style="display:none"></div>
             </div>
             <form action="" method="POST" id="assignNewOwner">
                 <div class="modal-body mx-3">
@@ -93,45 +97,4 @@
         </div>
     </div>
 </div>
-<script>
-    $('#myModal').on('show.bs.modal', function (e) {
-        var assetName = $(e.relatedTarget).data('asset-name');
-        $(e.currentTarget).find('#modelTitle').text(assetName);
-        $(e.currentTarget).find('#assignNewOwner').attr("action", "/" + assetName+"/assignNewOwner");
-    });
-
-    $('#assignNewOwner').submit(function (event) {
-        // Stop form from submitting normally
-        event.preventDefault();
-        // Get some values from elements on the page:
-        var $form = $(this),
-            owner = $form.find("#defaultForm-owner").val(),
-            email = $form.find("#defaultForm-email").val(),
-            userType =$form.find("#defaultForm-userType").val()
-        message = $form.find("#defaultForm-message").val()
-        url = $form.attr("action");
-
-        //$('#myModal').modal('hide');
-        $.post(url, {
-            owner: owner,
-            email: email,
-            userType:userType,
-            message: message
-        }, function (data, status) {
-
-            if (data.redirect) {
-                // data.redirect contains the string URL to redirect to
-                window.location.href = data.redirect;
-            } else {
-                // data.form contains the HTML for the replacement form
-                $("#myModal").replaceWith(data.form);
-            }
-        });
-
-        $('#alert-Message').text('Successfully Added the owner');
-        setTimeout(function () {
-            location.reload();
-        }, 500);
-        // this.submit();
-    });
-</script>
+<script src="/javascript/src.js"></script>

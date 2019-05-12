@@ -40,9 +40,7 @@ function showAssets(req, res) {
  */
 function showSingle(req, res) {
     // get a single Asset
-    Asset.findOne({
-        AssetSerial: req.params.AssetSerial
-    },
+    Asset.findById(req.params.id,
         (err, asset) => {
             if (err) {
                 res.status(404);
@@ -108,11 +106,8 @@ function processCreate(req, res) {
     // validate information
     req.checkBody("AssetDescription", "Name is required.").notEmpty();
     //req.checkBody("AssetSerial", "Asset Serial is required.").notEmpty();
-    console.log('Asset serial'+req.body.AssetSerial);
-    if (req.body.AssetSerial === '')
-        req.body.AssetSerial = 'D-' + Date.now();
+    
     // if there are errors, redirect and save errors to flash
-    console.log('Asset serial'+req.body.AssetSerial);
     const errors = req.validationErrors();
     if (errors) {
         req.flash("errors", errors.map(err => err.msg));
@@ -129,25 +124,25 @@ function processCreate(req, res) {
         email: req.body.email,
         userType: req.body.userType,
         assignedDate: req.body.assignedDate,
-        givenAccesories: req.body.givenAccesories,
+        givenAccessories: req.body.givenAccessories,
         missingAccessories: req.body.missingAccessories,
         Comments: req.body.Comments
     });
-
+   
     // save Asset
     asset.save(err => {
         if (err) throw err;
 
         // set a successful flash message
-        req.flash("success", "Successfuly created Asset!");
+        req.flash("success", "Successfully created Asset!");
 
         // redirect to the newly created Asset
-        res.redirect(`/${asset.AssetSerial}`);
+        res.redirect(`/${asset.id}`);
 
         //create History table
         const history = new History({
-            AssetDescription: req.body.AssetDescription,
-            AssetSerial: req.body.AssetSerial
+            AssetDescription_fk: asset.AssetDescription,
+            Asset_fk: asset.id
         });
 
         history.save(err => {
@@ -155,17 +150,13 @@ function processCreate(req, res) {
             console.log("History Entry added");
         });
     });
-
-
 }
 
 /**
  * Show the edit form
  */
 function showEdit(req, res) {
-    Asset.findOne({
-        AssetSerial: req.params.AssetSerial
-    },
+    Asset.findById(req.params.id,
         (err, asset) => {
             res.render("pages/edit", {
                 asset: asset,
@@ -182,7 +173,6 @@ function processEdit(req, res) {
 
     // validate information
     req.checkBody("AssetDescription", "AssetDescription is required.").notEmpty();
-    req.checkBody("AssetSerial", "AssetSerial is required.").notEmpty();
 
     // if there are errors, redirect and save errors to flash
     const errors = req.validationErrors();
@@ -192,16 +182,14 @@ function processEdit(req, res) {
     }
 
     // finding a current Asset
-    Asset.findOne({
-        AssetSerial: req.params.AssetSerial
-    },
+    Asset.findById(req.params.id,
         (err, asset) => {
             // updating that Asset
             (asset.AssetSerial = req.body.AssetSerial),
                 (asset.AssetDescription = req.body.AssetDescription),
                 (asset.AssetType = req.body.AssetType),
                 (asset.AssetSubType = req.body.AssetSubType),
-                (asset.givenAccesories = req.body.givenAccesories),
+                (asset.givenAccessories = req.body.givenAccessories),
                 (asset.missingAccessories = req.body.missingAccessories),
                 (asset.Comments = req.body.Comments),
                 asset.save(err => {
@@ -210,17 +198,16 @@ function processEdit(req, res) {
                     // success flash message
                     // redirect back to the /Assets
                     req.flash("success", "Successfully updated Asset.");
-                    res.redirect(`/${asset.AssetSerial}`);
+                    res.redirect(`/${asset.id}`);
                 });
 
             History.findOne({
-                AssetSerial: req.params.AssetSerial
+                Asset_fk: req.params.id
             },
                 (err, history) => {
                     if (err) throw err;
 
                     history.AssetDescription = req.body.AssetDescription,
-                        history.AssetSerial = req.body.AssetSerial
                     history.save(err => {
                         if (err) throw err;
                         console.log('Updated the history Entry');
@@ -236,9 +223,7 @@ function processEdit(req, res) {
  * Delete an Asset
  */
 function deleteAsset(req, res) {
-    Asset.remove({
-        AssetSerial: req.params.AssetSerial
-    },
+    Asset.findByIdAndDelete(req.params.id,
         err => {
             // set flash data
             // redirect back to the Assets page
@@ -254,7 +239,7 @@ function deleteAsset(req, res) {
 
 function showAssetHistory(req, res) {
     History.findOne({
-        AssetSerial: req.params.AssetSerial
+        Asset_fk: req.params.id
     },
         (err, history) => {
             if (err) {
@@ -298,7 +283,7 @@ function showAssignmentHistory(req, res) {
      */
 
 function assignNewOwner(req, res) {
-    let AssetSerial = req.params.AssetSerial;
+    let id = req.params.id;
     let owner = req.body.owner;
     let email = req.body.email;
     let fromDate;
@@ -312,9 +297,7 @@ function assignNewOwner(req, res) {
     }
 
     // finding a current Asset
-    Asset.findOne({
-        AssetSerial: req.params.AssetSerial
-    },
+    Asset.findById(id,
         (err, Asset) => {
             // updating that Asset
             Asset.email = req.body.email;
@@ -359,9 +342,10 @@ function assignNewOwner(req, res) {
 
                 //Update the History Table
                 History.findOne({
-                    AssetSerial: AssetSerial
-                },
+                Asset_fk: req.params.id
+                 },
                     (err, history) => {
+                        // console.log('History'+history);
                         if (err) {
                             res.status(404);
                             res.send("Asset not found!");

@@ -13,7 +13,7 @@
         </div>
         <% } %>
 
-        <form action="/<%= asset.AssetSerial %>" method="POST">
+        <form action="/<%= asset.id %>" method="POST">
 
             <div class="form-group">
                 <label>Asset Description</label>
@@ -51,7 +51,7 @@
 
             <div class="form-group">
                 <label>Given Accessories</label>
-                <input type="text" name="givenAccesories" class="form-control" value="<%= asset.givenAccesories %>">
+                <input type="text" name="givenAccessories" class="form-control" value="<%= asset.givenAccessories %>">
             </div>
 
             <div class="form-group">

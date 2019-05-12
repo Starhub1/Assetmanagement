@@ -6,27 +6,25 @@ const AssetsController = require('./controllers/assets.controller');
 
 router.get('/', AssetsController.showAssets);
 
-router.get('/:AssetSerial/history',AssetsController.showAssetHistory);
+router.get('/:id/history',AssetsController.showAssetHistory);
 
 router.get('/assignmentHistory',AssetsController.showAssignmentHistory);
 
-router.get('/seed',AssetsController.seedAssets);
+//router.get('/seed',AssetsController.seedAssets);
 
 router.get('/create',AssetsController.showCreate);
 
 router.post('/create',AssetsController.processCreate);
 
-router.get('/:AssetSerial/edit',AssetsController.showEdit);
+router.get('/:id/edit',AssetsController.showEdit);
 
-router.post('/:AssetSerial',AssetsController.processEdit);
+router.post('/:id',AssetsController.processEdit);
 
-router.get('/:AssetSerial', AssetsController.showSingle);
+router.get('/:id', AssetsController.showSingle);
 
-router.get('/:AssetSerial/delete',AssetsController.deleteAsset);
+router.get('/:id/delete',AssetsController.deleteAsset);
 
-router.post('/:AssetSerial/assignNewOwner',AssetsController.assignNewOwner);
-
-
+router.post('/:id/assignNewOwner',AssetsController.assignNewOwner);
 
 
 module.exports = router;

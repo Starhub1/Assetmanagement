@@ -1,24 +1,20 @@
-body {
-    font-size: 16px;
-    line-height:1.5
+#asset-table {
+    font-size: 12px;
+    line-height: 1.5
 }
 
 #site-header .navbar {
     border-radius: 0;
     border: none;
-    margin:0
+    margin: 0;
 }
+
 
 #site-main {
-    padding-bottom: 50px;
-    padding-top: 50px
+    padding-bottom: 20px;
+    padding-top: 0px
 }
 
-#site-footer{
-    text-align: center;
-    padding-bottom: 30px;
-    padding-top: 30px;
-    font-size: 12px;
-    background: #222;
-    color: #999;
+#search-col{
+    padding-bottom: 5px
 }

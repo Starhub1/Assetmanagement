@@ -11,7 +11,7 @@ const assetSchema = new Schema({
   email:String,
   userType:String,
   assignedDate:String,
-  givenAccesories:String,
+  givenAccessories:String,
   missingAccessories:String,
   Comments:String 
 });
