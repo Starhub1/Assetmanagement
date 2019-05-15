@@ -28,7 +28,7 @@
         <% for (var i=0; i<assets.length ; i++) { %>
         <tr>
             <td><%= i+1 %></td>
-            <td><a id="AssetDescription" href="/<%= assets[i].id %>"><%= assets[i].AssetDescription %></a></td>
+            <td><a id="AssetDescription" href="/home/<%= assets[i].id %>"><%= assets[i].AssetDescription %></a></td>
             <td><%= assets[i].AssetType %></td>
             <td><%= assets[i].AssetSubType %></td>
             <td><%= assets[i].AssetSerial %></td>
@@ -39,16 +39,16 @@
             <td><%= assets[i].missingAccessories %></td>
             <!-- <td><%= assets[i].Comments %></td> -->
             <td>
-                <a href="/<%= assets[i].id %>/edit" class="btn btn-sm btn-primary">Edit</a>
+                <a href="/home/<%= assets[i].id %>/edit" class="btn btn-sm btn-primary">Edit</a>
                 <!-- Trigger the modal -->
                 <a href="#myModal" class="btn btn-sm btn-primary" data-toggle="modal"
                     data-asset-id="<%= assets[i].id %>" data-asset-name="<%= assets[i].AssetDescription %>">Assign</a>
                     
-                <a href="/<%= assets[i].id %>/delete" class="btn btn-sm btn-danger"
+                <a href="/home/<%= assets[i].id %>/delete" class="btn btn-sm btn-danger"
                     onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
 
                 
-                <a href="/<%= assets[i].id %>/history" class="btn btn-sm btn-primary">Assignment History</a>
+                <a href="/home/<%= assets[i].id %>/history" class="btn btn-sm btn-primary">Assignment History</a>
             </td>
         </tr>
         <% } %>

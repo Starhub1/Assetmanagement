@@ -2,7 +2,7 @@ $('#myModal').on('show.bs.modal', function (e) {
         var assetName = $(e.relatedTarget).data('asset-name');
         var assetId = $(e.relatedTarget).data('asset-id');
         $(e.currentTarget).find('#modelTitle').text(assetName);
-        $(e.currentTarget).find('#assignNewOwner').attr("action", "/" + assetId+"/assignNewOwner");
+        $(e.currentTarget).find('#assignNewOwner').attr("action", "/home/" + assetId+"/assignNewOwner");
     });
 
     $('#assignNewOwner').submit(function (event) {

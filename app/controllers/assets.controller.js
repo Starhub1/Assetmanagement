@@ -3,6 +3,7 @@ const History = require("../models/History");
 const nodemailer = require("nodemailer");
 
 module.exports = {
+    showLoginPage:showLoginPage,
     showAssets: showAssets,
     showSingle: showSingle,
     seedAssets: seedAssets,
@@ -15,6 +16,14 @@ module.exports = {
     showAssignmentHistory: showAssignmentHistory,
     assignNewOwner: assignNewOwner
 };
+
+/**
+ * Show Login page
+ */
+
+function showLoginPage(req,res){
+    res.render('pages/login');
+}
 
 /**
  * Show all Assets

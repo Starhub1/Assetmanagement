@@ -2,29 +2,35 @@
 const express = require('express');
 const router = express.Router();
 const AssetsController = require('./controllers/assets.controller');
+const passport = require('passport');
+const passportStrategy = require('./config/passport.config');
 
 
-router.get('/', AssetsController.showAssets);
+router.get('/', AssetsController.showLoginPage);
 
-router.get('/:id/history',AssetsController.showAssetHistory);
+router.post('/',passport.authenticate('local',{ failureRedirect: '/' }),AssetsController.showAssets);
 
-router.get('/assignmentHistory',AssetsController.showAssignmentHistory);
+router.get('/home', AssetsController.showAssets);
+
+router.get('/home/:id/history',AssetsController.showAssetHistory);
+
+router.get('/home/assignmentHistory',AssetsController.showAssignmentHistory);
 
 //router.get('/seed',AssetsController.seedAssets);
 
-router.get('/create',AssetsController.showCreate);
+router.get('/home/create',AssetsController.showCreate);
 
-router.post('/create',AssetsController.processCreate);
+router.post('/home/create',AssetsController.processCreate);
 
-router.get('/:id/edit',AssetsController.showEdit);
+router.get('/home/:id/edit',AssetsController.showEdit);
 
-router.post('/:id',AssetsController.processEdit);
+router.post('/home/:id',AssetsController.processEdit);
 
-router.get('/:id', AssetsController.showSingle);
+router.get('/home/:id', AssetsController.showSingle);
 
-router.get('/:id/delete',AssetsController.deleteAsset);
+router.get('/home/:id/delete',AssetsController.deleteAsset);
 
-router.post('/:id/assignNewOwner',AssetsController.assignNewOwner);
+router.post('/home/:id/assignNewOwner',AssetsController.assignNewOwner);
 
 
 module.exports = router;
