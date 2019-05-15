@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 8080;
 const expressLayouts = require('express-ejs-layouts');
 // const mongo = require
 const mongoose = require('mongoose');
@@ -33,15 +33,18 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
 
-//connect to db
+//connect to cloud db
 
-// mongoose.connect("mongodb+srv://test:test@cluster0-bm3xl.mongodb.net/test?retryWrites=true");
-mongoose.connect(
-  'mongodb+srv://test:test@cluster0-bm3xl.mongodb.net/test?retryWrites=true',
-  {
-    useNewUrlParser: true
-  }
-);
+// mongoose.connect(
+//   'mongodb+srv://test:test@cluster0-bm3xl.mongodb.net/test?retryWrites=true',
+//   {
+//     useNewUrlParser: true
+//   }
+// );
+
+//connect to local db
+mongoose.connect("mongodb://localhost/AssetManagement", {useNewUrlParser: true});
+
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
