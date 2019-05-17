@@ -14,7 +14,8 @@ module.exports = {
     deleteAsset: deleteAsset,
     showAssetHistory: showAssetHistory,
     showAssignmentHistory: showAssignmentHistory,
-    assignNewOwner: assignNewOwner
+    assignNewOwner: assignNewOwner,
+    logout:logout
 };
 
 /**
@@ -146,7 +147,7 @@ function processCreate(req, res) {
         req.flash("success", "Successfully created Asset!");
 
         // redirect to the newly created Asset
-        res.redirect(`/${asset.id}`);
+        res.redirect(`/home/${asset.id}`);
 
         //create History table
         const history = new History({
@@ -207,7 +208,7 @@ function processEdit(req, res) {
                     // success flash message
                     // redirect back to the /Assets
                     req.flash("success", "Successfully updated Asset.");
-                    res.redirect(`/${asset.id}`);
+                    res.redirect(`/home/${asset.id}`);
                 });
 
             History.findOne({
@@ -390,4 +391,13 @@ function assignNewOwner(req, res) {
             });
         }
     );
+}
+
+/**
+ * Logout
+ */
+function logout(req,res){
+        req.logout();
+       req.flash('success_msg', 'You are logged out');
+        res.redirect('/');
 }
