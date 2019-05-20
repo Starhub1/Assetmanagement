@@ -1,0 +1,95 @@
+<!-- header -->
+<header id="site-header">
+        <div class="navbar navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <a href="/home" class="navbar-brand">Asset Management</a>
+                </div>
+
+                <ul class="nav navbar-nav">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/home/create">Create an Asset</a></li>
+                    <li><a href="/home/assignmentHistory">Assignment History</a></li>
+                    <li><a href="/home/logout">Log Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+<div class="jumbotron text-center">
+    <h1>Create an Asset</h1>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+
+        <% if (errors.length > 0) { %>
+        <div class="alert alert-danger">
+            <% for (error of errors) { %>
+            <%= error %><br>
+            <% } %>
+        </div>
+        <% } %>
+
+        <form action="/home/create" method="POST">
+
+            <div class="form-group">
+                <label>Asset Description</label>
+                <input type="text" name="AssetDescription" class="form-control" required>
+            </div>
+
+            <!-- Single button -->
+            <div class="form-group">
+                <label>Asset Type</label>
+                <select name="AssetType" class="form-control">
+                    <option value="Device" selected>Device</option>
+                    <option value="Accessory">Accessory</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Asset Sub-Type</label>
+                <select name="AssetSubType" class="form-control">
+                    <option value="Mobile" selected>Mobile</option>
+                    <option value="Laptop">Laptop</option>
+                    <option value="iPad">iPad</option>
+                    <option value="Tab">Tab</option>
+                    <option value="Cover">Cover</option>
+                    <option value="Cable">Cable</option>
+                    <option value="Server">Server</option>
+                    <option value="Monitor">Monitor</option>
+                    <option value="Keyboard">Keyboard</option>
+                    <option value="Mouse">Mouse</option>
+                    <option value="Lock">Lock</option>
+                    <option value="Security Mount">Security Mount</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Asset Serial</label>
+                <input type="text" name="AssetSerial" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>Given Accessories</label>
+                <input type="text" name="givenAccessories" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>Missing Accessories</label>
+                <input type="text" name="missingAccessories" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>Comments</label>
+                <input type="text" name="Comments" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-lg">Create</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+</div>

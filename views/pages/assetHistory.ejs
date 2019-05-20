@@ -1,0 +1,53 @@
+<!-- header -->
+<header id="site-header">
+    <div class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="/home" class="navbar-brand">Asset Management</a>
+            </div>
+
+            <ul class="nav navbar-nav">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/home/create">Create an Asset</a></li>
+                <li><a href="/home/assignmentHistory">Assignment History</a></li>
+                <li><a href="/home/logout">Log Out</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<% if (success.length > 0) { %>
+<div class="alert alert-success"><%= success %></div>
+<% } %>
+
+<div class="jumbotron text-center">
+  <h1><%= history.AssetDescription_fk %></h1>
+  <h2>Assignment History</h2>
+</div>
+<div>
+  <table class="table table-bordered table-hover table-striped">
+    <thead>
+      <tr>
+        <th>Owner</th>
+        <th>Email</th>
+        <th>QA/Dev</th>
+        <th>From Date</th>
+        <th>To Date</th>
+        <th>Comments</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% for (var history of history.historyArr.reverse()) { %>
+      <tr>
+        <td><%= history.owner %></td>
+        <td><%= history.email %></td>
+        <td><%= history.userType %></td>        
+        <td><%= history.fromDate %></td>
+        <td><%= history.toDate %></td>
+        <td><%= history.comment %></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>

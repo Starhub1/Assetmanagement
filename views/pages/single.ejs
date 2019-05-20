@@ -1,0 +1,93 @@
+<!-- header -->
+<header id="site-header">
+        <div class="navbar navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <a href="/home" class="navbar-brand">Asset Management</a>
+                </div>
+
+                <ul class="nav navbar-nav">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/home/create">Create an Asset</a></li>
+                    <li><a href="/home/assignmentHistory">Assignment History</a></li>
+                    <li><a href="/home/logout">Log Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+<% if (success.length > 0) { %>
+<div class="alert alert-success"><%= success %></div>
+<% } %>
+
+<div class="jumbotron text-center">
+    <h1><%= asset.AssetDescription %></h1>
+</div>
+<div>
+    <table class="table table-bordered table-hover table-striped">
+        <tbody>
+            <tr>
+                <td>Asset Serial Number</td>
+                <td>
+                    <p><%= asset.AssetSerial %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Asset Type</td>
+                <td>
+                    <p><%= asset.AssetType %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Asset Sub-Type</td>
+                <td>
+                    <p><%= asset.AssetSubType %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Asset Owner</td>
+                <td>
+                    <p><%= asset.owner %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Owner Email</td>
+                <td>
+                    <p><%= asset.email %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>QA/Dev</td>
+                <td>
+                    <p><%= asset.userType %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Assigned On</td>
+                <td>
+                    <p><%= asset.assignedDate %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Given Accessories</td>
+                <td>
+                    <p><%= asset.givenAccessories %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Missing Accessories</td>
+                <td>
+                    <p><%= asset.missingAccessories %></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Comments</td>
+                <td>
+                    <p><%= asset.Comments %></p>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</div>
