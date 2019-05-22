@@ -86,7 +86,7 @@ $('#myModal').on('show.bs.modal', function (e) {
       let url='/getAllAssets';
       $.get(url,function(data,status){
         console.log("Data: " + data + "\nStatus: " + status);
-        data.assets.forEach((ele,index) => {
+        data.forEach((ele,index) => {
           console.log(ele.email);
             if(ele.email=='In Storage'){
               returnEle[index].setAttribute('class','btn btn-sm btn-primary disabled');

@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const AssetsController = require('./controllers/assets.controller');
+const ReportController = require('./controllers/report.controller');
 const passport = require('passport');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 // Logout
@@ -36,8 +37,6 @@ router.get('/home/:id/delete',ensureAuthenticated,AssetsController.deleteAsset);
 router.post('/home/:id/assignNewOwner',ensureAuthenticated,AssetsController.assignNewOwner);
 
 router.get('/home/:id/return',ensureAuthenticated,AssetsController.returnAsset);
-
-
 
 
 module.exports = router;

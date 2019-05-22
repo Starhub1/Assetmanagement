@@ -61,7 +61,7 @@ function getAssets(req, res) {
 
         // return a view with data
         res.status(200);
-        res.json({assets});
+        res.json(assets);
     });
 }
 
@@ -358,7 +358,7 @@ function assignNewOwner(req, res) {
                 var mailOptions = {
                     from: "CISCO Mobile Management <cx.mobilemanagement@gmail.com>",
                     to: req.body.email,
-                    cc: 'davisolo@cisco.com,sudhsure@cisco.com',
+                    // cc: 'davisolo@cisco.com,sudhsure@cisco.com',
                     subject:`${Asset.AssetDescription} has been assigned to ${req.body.owner} on ${Asset.assignedDate}`,
                     text: req.body.message
                 };
@@ -478,7 +478,7 @@ function returnAsset(req, res) {
                 var mailOptions = {
                     from: "CISCO Mobile Management <cx.mobilemanagement@gmail.com>",
                     to: _email,
-                    cc: 'davisolo@cisco.com,sudhsure@cisco.com',
+                    // cc: 'davisolo@cisco.com,sudhsure@cisco.com',
                     subject:`${Asset.AssetDescription} has been returned back by ${_owner} on ${Asset.assignedDate}`,
                     text: 'Asset Returned Successfully'
                 };

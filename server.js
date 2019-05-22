@@ -9,8 +9,9 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
-const passport= require('passport');
+const passport = require('passport');
 var CronJob = require('cron').CronJob;
+const ReportController = require('./app/controllers/report.controller');
 
 // Passport Config
 require('./config/passport')(passport);
@@ -19,15 +20,15 @@ require('./config/passport')(passport);
 // set sessions and cookie parser
 app.use(require('morgan')('combined'));
 app.use(cookieParser());
-app.use(require('express-session')
-  ({
+app.use(
+  require('express-session')({
     secret: '343ji43j4n3jn4jk3n',
     resave: false, // forces the session to be saved back to the store
-    saveUninitialized: false ,// dont save unmodified
+    saveUninitialized: false, // dont save unmodified
     cookie: {
       secure: false,
       maxAge: 3600000 //1 hour
-  }
+    }
   })
 );
 app.use(flash());
@@ -40,7 +41,9 @@ app.set('view engine', 'ejs');
 app.use(expressLayouts);
 
 //connect to local db
-mongoose.connect("mongodb://localhost/AssetManagement", {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost/AssetManagement', {
+  useNewUrlParser: true
+});
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -56,7 +59,6 @@ app.use(expressValidator());
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 // Global variables
 app.use(function(req, res, next) {
   res.locals.success_msg = req.flash('success_msg');
@@ -68,11 +70,13 @@ app.use(function(req, res, next) {
 //set the routes
 app.use(require('./app/route'));
 
-// //set the cron job
-// new CronJob('* * * * * *', function() {
-//   console.log('You will see this message every second');
-// }, null, true, 'America/Los_Angeles');
+//set the cron job
+const job = new CronJob('0 */1 * * * *', function() {
+  ReportController.generateReport();
+  console.log('Generating the Report...');
 
+});
+job.start();
 app.listen(port, () => {
   console.log(`App listening on http://localhost:${port}`);
 });
