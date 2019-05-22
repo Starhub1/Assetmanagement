@@ -13,6 +13,8 @@ router.post('/',passport.authenticate('local',{ failureRedirect: '/' }),AssetsCo
 
 router.get('/home',ensureAuthenticated, AssetsController.showAssets);
 
+router.get('/getAllAssets',ensureAuthenticated, AssetsController.getAssets);
+
 router.get('/home/:id/history',ensureAuthenticated,AssetsController.showAssetHistory);
 
 router.get('/home/assignmentHistory',ensureAuthenticated,AssetsController.showAssignmentHistory);
@@ -32,6 +34,8 @@ router.get('/home/:id', ensureAuthenticated,AssetsController.showSingle);
 router.get('/home/:id/delete',ensureAuthenticated,AssetsController.deleteAsset);
 
 router.post('/home/:id/assignNewOwner',ensureAuthenticated,AssetsController.assignNewOwner);
+
+router.get('/home/:id/return',ensureAuthenticated,AssetsController.returnAsset);
 
 
 

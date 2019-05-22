@@ -79,3 +79,19 @@ $('#myModal').on('show.bs.modal', function (e) {
       }
 
     }    
+
+    //Return button functionality
+    $(window).on('load',function(){
+      let returnEle = document.querySelectorAll('#returnButton');
+      let url='/getAllAssets';
+      $.get(url,function(data,status){
+        console.log("Data: " + data + "\nStatus: " + status);
+        data.assets.forEach((ele,index) => {
+          console.log(ele.email);
+            if(ele.email=='In Storage'){
+              returnEle[index].setAttribute('class','btn btn-sm btn-primary disabled');
+              // document.querySelectorAll('#returnButton')[index].setAttribute('disabled','')
+            }
+        });
+      });
+    })

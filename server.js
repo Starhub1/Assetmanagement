@@ -10,6 +10,7 @@ const expressValidator = require('express-validator');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const passport= require('passport');
+var CronJob = require('cron').CronJob;
 
 // Passport Config
 require('./config/passport')(passport);
@@ -66,6 +67,11 @@ app.use(function(req, res, next) {
 
 //set the routes
 app.use(require('./app/route'));
+
+// //set the cron job
+// new CronJob('* * * * * *', function() {
+//   console.log('You will see this message every second');
+// }, null, true, 'America/Los_Angeles');
 
 app.listen(port, () => {
   console.log(`App listening on http://localhost:${port}`);

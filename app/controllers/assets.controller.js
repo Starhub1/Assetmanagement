@@ -15,6 +15,8 @@ module.exports = {
     showAssetHistory: showAssetHistory,
     showAssignmentHistory: showAssignmentHistory,
     assignNewOwner: assignNewOwner,
+    returnAsset:returnAsset,
+    getAssets:getAssets,
     logout:logout
 };
 
@@ -42,6 +44,24 @@ function showAssets(req, res) {
             assets: assets,
             success: req.flash("success")
         });
+
+    });
+}
+
+/**
+ * Get all Assets
+ */
+function getAssets(req, res) {
+    // get all Assets
+    Asset.find({}, (err, assets) => {
+        if (err) {
+            res.status(404);
+            res.send("Assets not found!");
+        }
+
+        // return a view with data
+        res.status(200);
+        res.json({assets});
     });
 }
 
@@ -61,6 +81,7 @@ function showSingle(req, res) {
                 asset: asset,
                 success: req.flash("success")
             });
+
         }
     );
 }
@@ -404,4 +425,115 @@ function logout(req,res){
         req.logout();
        req.flash('success_msg', 'You are logged out');
         res.redirect('/');
+}
+
+/**
+ * Return the Asset
+ */
+function returnAsset(req, res) {
+    let id = req.params.id;
+    let owner = 'In Storage';
+    let email = 'In Storage';
+    let comment = 'Returned by the Owner'
+    let fromDate;
+
+    // if there are errors, redirect and save errors to flash
+    const errors = req.validationErrors();
+    if (errors) {
+        req.flash("errors", errors.map(err => err.msg));
+        return res.redirect(`/`);
+    }
+
+    // finding a current Asset
+    Asset.findById(id,
+        (err, Asset) => {
+            //Get Data of the previous owner
+            let _owner = Asset.owner;
+            let _email = Asset.email;
+
+            // updating that Asset
+            Asset.email = email;
+            Asset.owner = owner;
+            Asset.assignedDate = new Date().toLocaleString();
+            Asset.userType = 'NA';
+            fromDate = Asset.assignedDate;
+
+            Asset.save(err => {
+                if (err) throw err;
+
+                // success flash message
+                // redirect back to the /Assets
+                req.flash("success", "Asset returned to the Storage successfully.");
+                res.redirect('/');
+
+                //send a mail
+                var transporter = nodemailer.createTransport({
+                    service: "gmail",
+                    auth: {
+                        user: "cx.mobilemanagement@gmail.com",
+                        pass: "Cisco@1234"
+                    }
+                });
+
+                var mailOptions = {
+                    from: "CISCO Mobile Management <cx.mobilemanagement@gmail.com>",
+                    to: _email,
+                    cc: 'davisolo@cisco.com,sudhsure@cisco.com',
+                    subject:`${Asset.AssetDescription} has been returned back by ${_owner} on ${Asset.assignedDate}`,
+                    text: 'Asset Returned Successfully'
+                };
+
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log("Email sent: " + info.response);
+                    }
+                });
+
+                req.flash("success", "Email sent successfully");
+
+                //Update the History Table
+                History.findOne({
+                Asset_fk: req.params.id
+                 },
+                    (err, history) => {
+                        // console.log('History'+history);
+                        if (err) {
+                            res.status(404);
+                            res.send("Asset not found!");
+                        }
+                        if (history.historyArr.length > 0) {
+                            let data = history.historyArr;
+                            data[data.length - 1].toDate = new Date().toLocaleString();
+                            data.push({
+                                owner: Asset.owner,
+                                email: Asset.email,
+                                fromDate: Asset.assignedDate,
+                                userType: 'NA',
+                                toDate: "",
+                                comment:'In Storage'
+                            });
+                            history.historyArr = data;
+                        } else {
+                            let data = {
+                                owner: owner,
+                                email: email,
+                                fromDate: fromDate,
+                                userType: 'NA',
+                                toDate: "",
+                                comment:'In Storage'
+                            };
+                            history.historyArr = data;
+                        }
+
+                        history.save(err => {
+                            if (err) throw err;
+                            console.log("History table updated");
+                        });
+                    }
+                );
+            });
+        }
+    );
 }
