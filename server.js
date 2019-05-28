@@ -70,8 +70,8 @@ app.use(function(req, res, next) {
 //set the routes
 app.use(require('./app/route'));
 
-//set the cron job
-const job = new CronJob('0 */1 * * * *', function() {
+// set the cron job
+const job = new CronJob('5 4 * * fri', function() {
   ReportController.generateReport();
   console.log('Generating the Report...');
 

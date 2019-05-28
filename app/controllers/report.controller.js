@@ -12,7 +12,7 @@ module.exports = {
 async function generateReport(req, res) {
   let data = AssetsController.getAssets;
 
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({ headless: true   });
   const page = await browser.newPage();
   await page.goto('http://localhost:8082/', { waitUntil: 'networkidle0' });
   await page.type('#email', 'admin');
@@ -21,23 +21,24 @@ async function generateReport(req, res) {
   await page.addStyleTag({
     content: '#Actions {display: none}'
   });
-  const pdfAssets = await page.pdf({ format: 'A2' });
+
+  await page.pdf({ path:'AssetReport.pdf',format: 'A2' });
 
 //   await page.click('#AssignmentHistory');
   await page.goto('http://localhost:8082/home/assignmentHistory', { waitUntil: 'networkidle0' });
 
-  const pdfAssignment = await page.pdf({ format: 'A2' });
-  await browser.close();
+  await page.pdf({ path:'AssignmentReport.pdf',format: 'A2' });
+  // await browser.close();
 
-  fs.writeFile('AssetReport.pdf', pdfAssets, function(err) {
-    if (err) return console.log(err);
-    else console.log('File is saved successfully');
-  });
+  // fs.writeFile('AssetReport.pdf', pdfAssets, function(err) {
+  //   if (err) return console.log(err);
+  //   else console.log('File is saved successfully');
+  // });
 
-  fs.writeFile('AssignmentReport.pdf', pdfAssignment, function(err) {
-    if (err) return console.log(err);
-    else console.log('File is saved successfully');
-  });
+  // fs.writeFile('AssignmentReport.pdf', pdfAssignment, function(err) {
+  //   if (err) return console.log(err);
+  //   else console.log('File is saved successfully');
+  // });
 //   res.set({
 //     'Content-Type': 'application/pdf',
 //     'Content-Length': pdfAssets.length
@@ -55,8 +56,7 @@ async function generateReport(req, res) {
 
   var mailOptions = {
       from: "CISCO Mobile Management <cx.mobilemanagement@gmail.com>",
-      to: 'mohnasir@cisco.com',
-      // cc: 'davisolo@cisco.com,sudhsure@cisco.com',
+      to: 'davisolo@cisco.com,sudhsure@cisco.com',
       subject:`Weekly Asset Report and Assignment History`,
       text: 'Please find attached the weekly Asset Report and Assignment History',
       attachments:[{path:'AssetReport.pdf'},{path:'AssignmentReport.pdf'}]

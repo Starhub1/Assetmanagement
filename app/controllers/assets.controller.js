@@ -1,6 +1,7 @@
 const Asset = require("../models/Assets");
 const History = require("../models/History");
 const nodemailer = require("nodemailer");
+const CommonUtils = require('./common.utils');
 
 module.exports = {
     showLoginPage:showLoginPage,
@@ -180,7 +181,11 @@ function processCreate(req, res) {
             if (err) throw err;
             console.log("History Entry added");
         });
+
+            CommonUtils.sendEmail('davisolo@cisco.com,sudhsure@cisco.com',`${asset.AssetDescription} Has been added to the inventory on ${new Date()}`,'');
+        
     });
+
 }
 
 /**
@@ -216,6 +221,7 @@ function processEdit(req, res) {
     Asset.findById(req.params.id,
         (err, asset) => {
             // updating that Asset
+            let previousState = JSON.stringify(asset);
             (asset.AssetSerial = req.body.AssetSerial),
                 (asset.AssetDescription = req.body.AssetDescription),
                 (asset.AssetType = req.body.AssetType),
@@ -245,6 +251,12 @@ function processEdit(req, res) {
                     });
                 }
             );
+            if(asset.email=='In Storage'){
+                CommonUtils.sendEmail('davisolo@cisco.com,sudhsure@cisco.com',`${asset.AssetDescription} Has been Edited on ${new Date()}`,`Previous State\n ${previousState}\n-----New State---------\n${asset}`,'');
+            }else{
+                CommonUtils.sendEmail(asset.email,`${asset.AssetDescription} Has been Edited on ${new Date()}`,`Previous State \n${previousState}\n-----New State---------\n${asset}`);
+            }
+
         }
     );
 
@@ -254,14 +266,19 @@ function processEdit(req, res) {
  * Delete an Asset
  */
 function deleteAsset(req, res) {
-    Asset.findByIdAndDelete(req.params.id,
-        err => {
-            // set flash data
-            // redirect back to the Assets page
-            req.flash("success", "Asset deleted!");
-            res.redirect("/");
-        }
-    );
+    Asset.findOne({
+        _id:req.params.id
+    },(err,asset)=>{
+        CommonUtils.sendEmail('davisolo@cisco.com,sudhsure@cisco.com',`${asset.AssetDescription} Has been deleted from the DB on ${new Date()}`,'');
+        Asset.findByIdAndDelete(req.params.id,
+            err => {
+                // set flash data
+                // redirect back to the Assets page
+                req.flash("success", "Asset deleted!");
+                res.redirect("/");
+            }
+        );
+    });
 }
 
 /**
@@ -358,7 +375,7 @@ function assignNewOwner(req, res) {
                 var mailOptions = {
                     from: "CISCO Mobile Management <cx.mobilemanagement@gmail.com>",
                     to: req.body.email,
-                    // cc: 'davisolo@cisco.com,sudhsure@cisco.com',
+                    cc: 'davisolo@cisco.com,sudhsure@cisco.com',
                     subject:`${Asset.AssetDescription} has been assigned to ${req.body.owner} on ${Asset.assignedDate}`,
                     text: req.body.message
                 };
@@ -478,7 +495,7 @@ function returnAsset(req, res) {
                 var mailOptions = {
                     from: "CISCO Mobile Management <cx.mobilemanagement@gmail.com>",
                     to: _email,
-                    // cc: 'davisolo@cisco.com,sudhsure@cisco.com',
+                    cc: 'davisolo@cisco.com,sudhsure@cisco.com',
                     subject:`${Asset.AssetDescription} has been returned back by ${_owner} on ${Asset.assignedDate}`,
                     text: 'Asset Returned Successfully'
                 };
