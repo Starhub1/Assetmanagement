@@ -24,7 +24,7 @@
     "fluentreports": "^1.2.5",
     "i": "^0.3.6",
     "mongodb": "^3.2.4",
-    "mongoose": "^5.5.5",
+    "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
     "node-cron": "^2.0.3",
     "nodemailer": "^6.1.1",
